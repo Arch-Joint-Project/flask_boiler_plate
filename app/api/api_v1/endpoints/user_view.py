@@ -83,6 +83,6 @@ def update(id):
 @user.route('/delete', methods=["DELETE"])
 def delete():
     get_id_param = request.args.get("id") # accept incoming query params ?id.
-    the_delete_user = user_controller.delete(the_id)
+    the_delete_user = user_controller.delete(get_id_param)
     return Response("Deleted Successfully", mimetype="application/json",status=200)
 
