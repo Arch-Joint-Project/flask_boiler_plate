@@ -16,8 +16,8 @@ class UserController:
         return user
 
     # read all
-    def read_all(self,obj_id):
-        user = self.repository.find_all(obj_id)
+    def read_all(self,data):
+        user = self.repository.find_all(data)
         return user
 
     # update_by_id

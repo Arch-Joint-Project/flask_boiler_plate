@@ -60,19 +60,18 @@ def read(id):
 @user.route('/update')  # default update
 @user.route('/update/<int:id>', methods=["PUT"]) # update of by id route
 def update(id):
-
-
+    data = request.json # accept json
     the_id =  id if (isinstance(id,int))  else "False"  # if the id is of type int, then we call update_by_id
     if(the_id):
 
-        the_update_user = user_controller.update_by_id(the_id)
+        the_update_user = user_controller.update_by_id(the_id,json.load(data)) # pass update param as dictionary
         response = json.dumps(dataclasses.asdict(the_update_user))
         return Response(response, mimetype="application/json",
                         status=200)  # set headers to return content-type as json, 200 when successful.
 
     else: #update all then.
         the_update_user = user_controller.update_all(
-            obj_id)  # controller handlers read operation from database using ORM.
+            obj_id,json.load(data))  # controller handlers read operation from database using ORM.
         response = json.dumps(dataclasses.asdict(
             the_read_user))  # convert the default read data type from ORM as a list to dictionary then jsonify for client response.
         return Response(response, mimetype="application/json",
