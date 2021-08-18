@@ -29,29 +29,26 @@ def create():
     return Response(response, mimetype="application/json", status=201)
 
 #R: Read Route for our user.
-@user.route('/read') # default read to Read all data from database.
+@user.route('/read/') # default read to Read all data from database.
 @user.route('/read/<int:id>', methods=["GET"]) # primary key read by ID to Read all data from database.
-def read(id):
+def read(the_id= -1):
 
 
-
-    the_id =  id if (isinstance(id,int))  else "False"  # if the id is of type int, then we call read_by_id method.
-    if(the_id):
-
+    if the_id != -1: # for an id not equal to -1 perform read_by_id
         the_read_user = user_controller.read_by_id(the_id)
         response = json.dumps(dataclasses.asdict(the_read_user))
         return Response(response, mimetype="application/json",
                         status=200)  # set headers to return content-type as json, 200 when successful.
+    else: # query by params.
+         query_param_data = request.args # accept incoming query params.
+         the_read_user = user_controller.read_all(
+         query_param_data)  # controller handlers read operation from database using ORM.
+         response = jsonify(the_read_user) # jsonify from list to json string.
+       #  return Response(str(response), mimetype="application/json",
 
-    else:
-        query_param_data = request.args # accept incoming query params.
-        the_read_user = user_controller.read_all(
-        query_param_data)  # controller handlers read operation from database using ORM.
-        response = json.dumps(dataclasses.asdict(
-            the_read_user))  # convert the default read data type from ORM as a list to dictionary then jsonify for client response.
-        return Response(response, mimetype="application/json",
-                        status=200)  # set headers to return content-type as json, 200 when successful.
+        #                status=200)  # set headers to return content-type as json, 200 when successful.
 
+        #return response
 
 
 
@@ -60,10 +57,10 @@ def read(id):
 # Update by id
 @user.route('/update')  # default update
 @user.route('/update/<int:id>', methods=["PUT"]) # update of by id route
-def update(id):
+def update(the_id = -1):
     data = request.json # accept json
-    the_id =  id if (isinstance(id,int))  else "False"  # if the id is of type int, then we call update_by_id
-    if(the_id):
+    #the_id =  id if (isinstance(id,int))  else "False"  # if the id is of type int, then we call update_by_id
+    if the_id != -1:
 
         the_update_user = user_controller.update_by_id(the_id,json.load(data)) # pass update param as dictionary
         response = json.dumps(dataclasses.asdict(the_update_user))
