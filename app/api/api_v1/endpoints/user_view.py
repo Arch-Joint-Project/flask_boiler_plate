@@ -45,7 +45,7 @@ def read(id):
 
     else:
         the_read_user = user_controller.read_all(
-            obj_id)  # controller handlers read operation from database using ORM.
+            the_id)  # controller handlers read operation from database using ORM.
         response = json.dumps(dataclasses.asdict(
             the_read_user))  # convert the default read data type from ORM as a list to dictionary then jsonify for client response.
         return Response(response, mimetype="application/json",
@@ -71,9 +71,9 @@ def update(id):
 
     else: #update all then.
         the_update_user = user_controller.update_all(
-            obj_id,json.load(data))  # controller handlers read operation from database using ORM.
+            the_id,json.load(data))  # controller handlers read operation from database using ORM.
         response = json.dumps(dataclasses.asdict(
-            the_read_user))  # convert the default read data type from ORM as a list to dictionary then jsonify for client response.
+            the_update_user))  # convert the default read data type from ORM as a list to dictionary then jsonify for client response.
         return Response(response, mimetype="application/json",
                         status=200)  # set headers to return content-type as json, 200 when successful.
 
